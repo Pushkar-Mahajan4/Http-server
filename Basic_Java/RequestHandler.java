@@ -34,7 +34,7 @@ class RequestHandler implements HttpHandler{
 
         // Extract queryparameters
         String queryParams = httpExchange.getRequestURI().getQuery();
-        System.out.println(queryParams);
+
 
         // Setup respond headers and response Body
         // Storing a bunch of headers in Map and adding them to response header
@@ -53,12 +53,13 @@ class RequestHandler implements HttpHandler{
 
         // Setup JSON file, unfotunately the Java Standard Library doesn't support JSON natively
         // For the sake of the Project I am avoiding to use any external library
-        String jsonString = "Hello World";
+        // String jsonString = "Hello World";
+
+        // This is a text block, we use this to create JSON Object
+        var jsonString = """ 
+                {"message" : "Hello My friend"}
+                """;
         byte[] bittu = jsonString.getBytes();
-        for(byte i: bittu){
-            System.out.print(i + " ");
-        }
-        
 
         // Adding single header 
         httpExchange.getResponseHeaders().add("authentication", "alndnakjs123lnljblkhl8hb6klb4kk8kk2bkbkhj5");
