@@ -11,10 +11,11 @@ import java.util.List;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+
 class RequestHandler implements HttpHandler{
     @Override
     public void handle(HttpExchange httpExchange) throws IOException{
-        String response = "Hello World";
+      
         
         // Capturing request Body with InputStream
         InputStream is = httpExchange.getRequestBody();
@@ -31,8 +32,11 @@ class RequestHandler implements HttpHandler{
         // Printing Http request Type
         System.out.println(httpExchange.getRequestMethod());
 
-        // Setup respond headers and response Body
+        // Extract queryparameters
+        String queryParams = httpExchange.getRequestURI().getQuery();
+        System.out.println(queryParams);
 
+        // Setup respond headers and response Body
         // Storing a bunch of headers in Map and adding them to response header
         Map<String, List<String>> headerMap = new HashMap<>();
         List<String> stateList = new ArrayList<String>();
@@ -47,13 +51,23 @@ class RequestHandler implements HttpHandler{
         headerMap.put("state", stateList);
         headerMap.put("greeks",greekGod);
 
+        // Setup JSON file, unfotunately the Java Standard Library doesn't support JSON natively
+        // For the sake of the Project I am avoiding to use any external library
+        String jsonString = "Hello World";
+        byte[] bittu = jsonString.getBytes();
+        for(byte i: bittu){
+            System.out.print(i + " ");
+        }
+        
+
         // Adding single header 
         httpExchange.getResponseHeaders().add("authentication", "alndnakjs123lnljblkhl8hb6klb4kk8kk2bkbkhj5");
+        httpExchange.getResponseHeaders().add("Content-Type", "application/json");
         httpExchange.getResponseHeaders().putAll(headerMap); 
-        httpExchange.sendResponseHeaders(201, response.length());
+        httpExchange.sendResponseHeaders(200, jsonString.length());
         
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(jsonString.getBytes());
 
         // Closing resources
         os.close();
